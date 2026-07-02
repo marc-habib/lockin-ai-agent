@@ -26,8 +26,8 @@ class TestBMRCalculation:
             height_cm=180,
             weight_kg=75
         )
-        # Expected: (10 * 75) + (6.25 * 180) - (5 * 28) + 5 = 1750
-        assert bmr == pytest.approx(1750.0, abs=1.0)
+        # Expected: (10 * 75) + (6.25 * 180) - (5 * 28) + 5 = 750 + 1125 - 140 + 5 = 1740
+        assert bmr == pytest.approx(1740.0, abs=1.0)
     
     def test_bmr_female(self):
         """Test BMR for female."""
@@ -37,8 +37,8 @@ class TestBMRCalculation:
             height_cm=165,
             weight_kg=60
         )
-        # Expected: (10 * 60) + (6.25 * 165) - (5 * 25) - 161 = 1376.25
-        assert bmr == pytest.approx(1376.3, abs=1.0)
+        # Expected: (10 * 60) + (6.25 * 165) - (5 * 25) - 161 = 600 + 1031.25 - 125 - 161 = 1345.25
+        assert bmr == pytest.approx(1345.2, abs=1.0)
 
 
 class TestTDEECalculation:

@@ -35,7 +35,7 @@ class TestFunctionCallingFormat:
         mock_response.choices = [Mock(message=mock_message)]
         mock_response.usage = Mock(prompt_tokens=100, completion_tokens=50)
         
-        with patch('app.clients.llm_client.OpenAI') as mock_openai:
+        with patch('openai.OpenAI') as mock_openai:
             mock_client = Mock()
             mock_client.chat.completions.create.return_value = mock_response
             mock_openai.return_value = mock_client
@@ -64,26 +64,9 @@ class TestFunctionCallingFormat:
         assert tool_call['function']['name'] == 'daily_planner'
         assert isinstance(tool_call['function']['arguments'], str), "arguments must be string"
     
-    def test_agent_service_formats_messages_correctly(self):
+    def test_agent_service_formats_messages_correctly(self, sample_profile):
         """Test that agent service formats messages with correct OpenAI structure."""
-        # Create mock profile
-        profile = ProfileResponse(
-            user_id="test_user",
-            age=25,
-            sex="male",
-            height_cm=180,
-            weight_kg=75,
-            goal="maintain",
-            activity_level="moderate",
-            bmr=1750.0,
-            tdee=2700.0,
-            target_macros=MacroTargets(
-                calories=2700.0,
-                protein_g=135.0,
-                carbs_g=300.0,
-                fat_g=75.0
-            )
-        )
+        profile = sample_profile
         
         # Mock LLM response with tool call
         mock_llm_response = {
@@ -160,27 +143,11 @@ class TestFunctionCallingFormat:
         assert tool_msg['tool_call_id'] == 'call_xyz789'
         assert 'name' not in tool_msg or tool_msg.get('name') is None, "Tool message should not have 'name' field for OpenAI"
     
-    def test_handler_returns_error_status_on_llm_failure(self):
+    def test_handler_returns_error_status_on_llm_failure(self, sample_profile):
         """Test that handler returns ERROR status when LLM call fails."""
         with patch('app.agent.handler.profile_guardrails') as mock_profile_guard:
             # Mock profile validation
-            mock_profile = ProfileResponse(
-                user_id="test_user",
-                age=25,
-                sex="male",
-                height_cm=180,
-                weight_kg=75,
-                goal="maintain",
-                activity_level="moderate",
-                bmr=1750.0,
-                tdee=2700.0,
-                target_macros=MacroTargets(
-                    calories=2700.0,
-                    protein_g=135.0,
-                    carbs_g=300.0,
-                    fat_g=75.0
-                )
-            )
+            mock_profile = sample_profile
             mock_profile_guard.get_profile_or_error.return_value = (mock_profile, None)
             
             with patch('app.agent.handler.input_guardrails') as mock_input_guard:
@@ -203,27 +170,11 @@ class TestFunctionCallingFormat:
         assert response.status == RequestStatus.ERROR, "Handler must return ERROR status when LLM fails"
         assert "Error calling LLM" in response.response or "error occurred" in response.response.lower()
     
-    def test_tool_call_arguments_are_parsed_correctly(self):
+    def test_tool_call_arguments_are_parsed_correctly(self, sample_profile):
         """Test that string arguments are parsed to dict before tool execution."""
         from app.agent.agent_service import AgentService
         
-        profile = ProfileResponse(
-            user_id="test_user",
-            age=25,
-            sex="male",
-            height_cm=180,
-            weight_kg=75,
-            goal="maintain",
-            activity_level="moderate",
-            bmr=1750.0,
-            tdee=2700.0,
-            target_macros=MacroTargets(
-                calories=2700.0,
-                protein_g=135.0,
-                carbs_g=300.0,
-                fat_g=75.0
-            )
-        )
+        profile = sample_profile
         
         # Mock LLM response with string arguments (as OpenAI returns)
         mock_llm_response = {

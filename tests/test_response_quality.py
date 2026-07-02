@@ -226,27 +226,12 @@ class TestStructuredDataPopulation:
         self,
         mock_input_guard,
         mock_profile_guard,
-        mock_agent
+        mock_agent,
+        sample_profile
     ):
         """Test that meal plan responses include structured data."""
         # Mock profile
-        profile = ProfileResponse(
-            user_id="test_user",
-            age=25,
-            sex="male",
-            height_cm=180,
-            weight_kg=75,
-            goal="maintain",
-            activity_level="moderate",
-            bmr=1750.0,
-            tdee=2700.0,
-            target_macros=MacroTargets(
-                calories=2700.0,
-                protein_g=135.0,
-                carbs_g=300.0,
-                fat_g=75.0
-            )
-        )
+        profile = sample_profile
         
         mock_profile_guard.get_profile_or_error.return_value = (profile, None)
         mock_input_guard.validate.return_value = (True, None)
@@ -293,26 +278,11 @@ class TestStructuredDataPopulation:
         self,
         mock_input_guard,
         mock_profile_guard,
-        mock_agent
+        mock_agent,
+        sample_profile
     ):
         """Test that non-meal-plan responses have null data field."""
-        profile = ProfileResponse(
-            user_id="test_user",
-            age=25,
-            sex="male",
-            height_cm=180,
-            weight_kg=75,
-            goal="maintain",
-            activity_level="moderate",
-            bmr=1750.0,
-            tdee=2700.0,
-            target_macros=MacroTargets(
-                calories=2700.0,
-                protein_g=135.0,
-                carbs_g=300.0,
-                fat_g=75.0
-            )
-        )
+        profile = sample_profile
         
         mock_profile_guard.get_profile_or_error.return_value = (profile, None)
         mock_input_guard.validate.return_value = (True, None)
