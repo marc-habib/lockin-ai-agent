@@ -125,7 +125,7 @@ class OutputGuardrails:
         if "diagnose" in text_lower or "diagnosis" in text_lower:
             return True
         
-        for phrase in medical_phrases[:-1]:  # Exclude "consult your doctor"
+        for phrase in medical_phrases:  
             if phrase in text_lower:
                 return True
         
