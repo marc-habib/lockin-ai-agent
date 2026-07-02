@@ -198,9 +198,9 @@ class AgentService:
             
             reflected_content = reflection_response.get('content', '')
             
-            # If reflection suggests changes, use the reflected response
-            if reflected_content and len(reflected_content) > len(response) * 0.5:
-                return reflected_content
+            # Reflection is currently only used as an internal validation step.
+            # Never replace the user-facing response with the reflection output.
+            return response
             
         except Exception:
             # If reflection fails, return original response
