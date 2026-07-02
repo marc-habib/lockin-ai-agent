@@ -70,7 +70,11 @@ DEFAULT_CACHE_EXPIRY_DAYS = 30
 # Dangerous keywords for safety guardrails
 MEDICAL_KEYWORDS = [
     "diagnose", "diagnosis", "cure", "treat", "treatment", "disease",
-    "medication", "prescription", "doctor", "physician", "medical advice",
+    "medicine", "medicines", "medication", "prescription", "prescribe", "prescribed",
+    "pill", "pills", "drug", "drugs", "dosage", "dose",
+    "painkiller", "painkillers", "antibiotic", "antibiotics",
+    "ibuprofen", "paracetamol", "aspirin",
+    "doctor", "physician", "medical advice",
     "steroids", "anabolic", "testosterone", "hgh", "growth hormone",
     "clenbuterol", "dnp", "injury", "pain", "surgery"
 ]
