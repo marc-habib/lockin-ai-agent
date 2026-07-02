@@ -33,13 +33,15 @@ def run_agent_handler(user_id: str, message: str) -> ChatResponse:
     request_id = f"req_{uuid.uuid4().hex[:12]}"
     
     # Step 1: Input Guardrails
-    is_valid, error_msg = input_guardrails.validate(message)
+    is_valid, guardrail_code, user_message = input_guardrails.validate(message)
+
     if not is_valid:
         latency_ms = int((time.time() - start_time) * 1000)
         return ChatResponse(
             request_id=request_id,
             status=RequestStatus.BLOCKED,
-            guardrail_triggered=error_msg,
+            response=user_message,
+            guardrail_triggered=guardrail_code,
             latency_ms=latency_ms
         )
     
