@@ -77,7 +77,7 @@ class ToolRegistry:
             Intent.PRODUCT_SEARCH: [product_lookup_tool],
             Intent.RECIPE: [food_lookup_tool, recipe_macro_tool],
             Intent.MEAL_PLAN: [food_lookup_tool, daily_planner_tool],
-            Intent.PROGRESS: [get_progress_tool],
+            Intent.PROGRESS: [get_progress_tool, daily_planner_tool],
             Intent.SHOPPING_LIST: [food_lookup_tool, daily_planner_tool],
             Intent.WORKOUT: [],  # No specific tools yet
             Intent.PRODUCTIVITY: [],  # No specific tools yet
