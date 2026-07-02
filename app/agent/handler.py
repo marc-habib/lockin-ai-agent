@@ -11,7 +11,7 @@ from app.agent.intent_router import intent_router
 from app.agent.agent_service import agent_service
 from app.guardrails import input_guardrails, profile_guardrails, output_guardrails
 from app.services.profile_service import profile_service
-from app.models.enums import RequestStatus
+from app.models.enums import RequestStatus, Intent
 from app.schemas.chat import ChatResponse
 
 
