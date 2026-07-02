@@ -10,7 +10,7 @@ from app.utils.constants import MAX_MESSAGE_LENGTH, MEDICAL_KEYWORDS, INJECTION_
 class InputGuardrails:
     """Input validation and safety checks."""
     
-    def validate(self, message: str) -> tuple[bool, str | None]:
+    def validate(self, message: str) -> tuple[bool, str |None, str | None]:
         """
         Validate user input.
         
@@ -22,25 +22,50 @@ class InputGuardrails:
         """
         # Check message length
         if len(message) > MAX_MESSAGE_LENGTH:
-            return False, f"Message too long. Maximum {MAX_MESSAGE_LENGTH} characters."
-        
+            return (
+                False,
+                "invalid_input",
+                f"Message too long. Maximum {MAX_MESSAGE_LENGTH} characters."
+            )
+
         # Check for empty message
         if not message.strip():
-            return False, "Message cannot be empty."
-        
+            return (
+                False,
+                "invalid_input",
+                "Message cannot be empty."
+            )
+
         # Check for prompt injection
         if self._detect_prompt_injection(message):
-            return False, "Potential prompt injection detected. Please rephrase your request."
+            return (
+                False,
+                "prompt_injection",
+                "I can't process requests that try to override my instructions."
+            )
         
         # Check for medical keywords
         if self._detect_medical_request(message):
-            return False, "I cannot provide medical advice. Please consult a healthcare professional."
-        
+            return (
+                False,
+                "medical_advice",
+                (
+                    "I can't help diagnose symptoms or recommend medication. "
+                    "Please consult a healthcare professional. "
+                    "If your symptoms are severe, sudden, or worsening, "
+                    "contact emergency services immediately."
+                )
+            )
+
         # Check for dangerous content
         if self._detect_dangerous_content(message):
-            return False, "I cannot provide advice on dangerous diets or substances."
-        
-        return True, None
+            return (
+                False,
+                "dangerous_diet",
+                "I can't help with dangerous diets or unsafe substance advice."
+            )   
+
+        return True, None, None
     
     def _detect_prompt_injection(self, message: str) -> bool:
         """
