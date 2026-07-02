@@ -66,6 +66,16 @@ def run_agent_handler(user_id: str, message: str) -> ChatResponse:
             user_id=user_id
         )
         
+        # Check if agent returned an error
+        if agent_result.get('error'):
+            latency_ms = int((time.time() - start_time) * 1000)
+            return ChatResponse(
+                request_id=request_id,
+                status=RequestStatus.ERROR,
+                response=agent_result.get('response', 'An error occurred'),
+                latency_ms=latency_ms
+            )
+        
         response_text = agent_result.get('response', '')
         tool_calls = agent_result.get('tool_calls', [])
         tool_results = agent_result.get('tool_results', [])

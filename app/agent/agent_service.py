@@ -83,7 +83,8 @@ class AgentService:
                     'tool_calls': all_tool_calls,
                     'tool_results': tool_results,
                     'usage': {'input_tokens': 0, 'output_tokens': 0},
-                    'iterations': iterations
+                    'iterations': iterations,
+                    'error': str(e)
                 }
             
             # Check if LLM wants to use tools
@@ -91,29 +92,43 @@ class AgentService:
                 # Execute tool calls
                 tool_call_list = llm_response['tool_calls']
                 
-                # Inject user_id into get_progress tool calls
+                # Parse and prepare tool calls for execution
+                exec_tool_calls = []
                 for tool_call in tool_call_list:
-                    if tool_call['name'] == 'get_progress':
-                        tool_call['arguments']['user_id'] = user_id
+                    # Parse arguments if they're a string
+                    import json
+                    args = tool_call['function']['arguments']
+                    if isinstance(args, str):
+                        args = json.loads(args)
+                    
+                    # Inject user_id into get_progress tool calls
+                    if tool_call['function']['name'] == 'get_progress':
+                        args['user_id'] = user_id
+                    
+                    exec_tool_calls.append({
+                        'id': tool_call['id'],
+                        'name': tool_call['function']['name'],
+                        'arguments': args
+                    })
                 
-                results = self.executor.execute_tool_calls(tool_call_list)
+                results = self.executor.execute_tool_calls(exec_tool_calls)
                 
                 # Track tool calls and results
-                all_tool_calls.extend([tc['name'] for tc in tool_call_list])
+                all_tool_calls.extend([tc['function']['name'] for tc in tool_call_list])
                 tool_results.extend(results)
                 
-                # Add assistant message with tool calls
+                # Add assistant message with tool calls (OpenAI format)
                 messages.append({
                     "role": "assistant",
-                    "content": llm_response.get('content') or "",
+                    "content": llm_response.get('content'),
                     "tool_calls": tool_call_list
                 })
                 
-                # Add tool results to messages
+                # Add tool results to messages (OpenAI format)
                 for result in results:
                     messages.append({
                         "role": "tool",
-                        "name": result['tool_name'],
+                        "tool_call_id": result['call_id'],
                         "content": str(result['result']) if result['success'] else f"Error: {result['error']}"
                     })
                 

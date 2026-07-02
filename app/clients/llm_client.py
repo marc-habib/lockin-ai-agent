@@ -114,8 +114,11 @@ class LLMClient:
             for tool_call in message.tool_calls:
                 result["tool_calls"].append({
                     "id": tool_call.id,
-                    "name": tool_call.function.name,
-                    "arguments": json.loads(tool_call.function.arguments)
+                    "type": "function",
+                    "function": {
+                        "name": tool_call.function.name,
+                        "arguments": tool_call.function.arguments
+                    }
                 })
         
         return result
