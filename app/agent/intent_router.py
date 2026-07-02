@@ -25,9 +25,23 @@ class IntentRouter:
         """
         message_lower = message.lower()
         
+        # Calorie target / daily target queries
+        if any(keyword in message_lower for keyword in [
+            "how many calories should i eat",
+            "how many calories do i have to eat",
+            "how many kcal should i eat",
+            "daily calories",
+            "target calories",
+            "calorie target",
+            "maintenance calories",
+            "tdee",
+            "bmr"
+        ]):
+            return Intent.PROGRESS
+
         # Progress queries
         if any(keyword in message_lower for keyword in [
-            'remaining', 'left', 'how much', 'on track', 'progress',
+            'remaining', 'left', 'on track', 'progress',
             'consumed', 'eaten', 'logged'
         ]):
             return Intent.PROGRESS
