@@ -419,5 +419,3 @@ MIT License - see LICENSE file for details.
 ## 📧 Contact
 
 For questions or issues, please open an issue on GitHub.
-
-**Built with ❤️ for health and performance optimization**
