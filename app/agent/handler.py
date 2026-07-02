@@ -85,7 +85,8 @@ def run_agent_handler(user_id: str, message: str) -> ChatResponse:
         # Step 5: Output Guardrails
         is_valid_output, output_error = output_guardrails.validate(
             response=response_text,
-            tool_results=tool_results
+            tool_results=tool_results,
+            intent=intent
         )
         
         if not is_valid_output:

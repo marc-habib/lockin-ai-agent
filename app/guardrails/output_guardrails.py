@@ -10,7 +10,7 @@ import re
 class OutputGuardrails:
     """Output validation and safety checks."""
     
-    def validate(self, response: str, tool_results: list[dict] | None = None) -> tuple[bool, str | None]:
+    def validate(self, response: str, tool_results: list[dict] | None = None, intent=None) -> tuple[bool, str | None]:
         """
         Validate agent response.
         
