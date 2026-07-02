@@ -93,7 +93,8 @@ def run_agent_handler(user_id: str, message: str) -> ChatResponse:
             return ChatResponse(
                 request_id=request_id,
                 status=RequestStatus.BLOCKED,
-                guardrail_triggered=f"Output validation failed: {output_error}",
+                response="I can't provide unsafe or medical advice.",
+                guardrail_triggered="output_validation_failed",
                 latency_ms=latency_ms
             )
         
