@@ -4,6 +4,7 @@ Tool schemas for LockIn AI.
 Pydantic models for tool inputs and outputs.
 """
 
+from typing import Any
 from pydantic import BaseModel, Field
 from app.schemas.nutrition import FoodNutrition, ProductNutrition, RecipeMacros
 
@@ -88,6 +89,3 @@ class MealPlanOutput(BaseModel):
     total_carbs_g: float
     total_fat_g: float
     notes: str | None = None
-
-
-from typing import Any
