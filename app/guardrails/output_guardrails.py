@@ -110,14 +110,15 @@ class OutputGuardrails:
         text_lower = text.lower()
         
         medical_phrases = [
-            "you should take",
-            "i recommend taking",
+            "i recommend taking medication",
+            "i recommend taking medicine",
+            "take this medication",
+            "take this medicine",
             "this will cure",
             "this will treat",
-            "you have",
-            "you might have",
-            "you probably have",
-            "consult your doctor" # Actually OK, but let's be safe
+            "you have a disease",
+            "you might have a disease",
+            "you probably have a disease",
         ]
         
         # Allow "consult a healthcare professional" but not diagnosis
