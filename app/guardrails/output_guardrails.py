@@ -40,6 +40,40 @@ class OutputGuardrails:
         
         return True, None
     
+    def clean_response(self, response: str) -> str:
+        """
+        Remove internal reflection/self-check text from response.
+        
+        Args:
+            response: Raw agent response
+        
+        Returns:
+            Cleaned response without internal reflection
+        """
+        if not response:
+            return response
+        
+        # Patterns that indicate internal reflection/self-check
+        reflection_patterns = [
+            r'(?i)\*\*self-check\*\*:.*?(?=\n\n|\Z)',
+            r'(?i)self-check:.*?(?=\n\n|\Z)',
+            r'(?i)\[internal.*?\].*?(?=\n\n|\Z)',
+            r'(?i)\(internal.*?\).*?(?=\n\n|\Z)',
+            r'(?i)let me verify.*?(?=\n\n|\Z)',
+            r'(?i)checking.*?grounding.*?(?=\n\n|\Z)',
+            r'(?i)this response is valid.*?(?=\n\n|\Z)',
+            r'(?i)validation:.*?(?=\n\n|\Z)',
+        ]
+        
+        cleaned = response
+        for pattern in reflection_patterns:
+            cleaned = re.sub(pattern, '', cleaned, flags=re.DOTALL)
+        
+        # Remove excessive newlines
+        cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
+        
+        return cleaned.strip()
+    
     def _contains_nutrition_numbers(self, text: str) -> bool:
         """
         Check if text contains specific nutrition numbers.

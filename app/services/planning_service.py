@@ -119,6 +119,9 @@ class PlanningService:
         - Consider variety and balance
         - Respect dietary restrictions more thoroughly
         """
+        # Check if user has peanut allergy (blocks all nuts)
+        has_peanut_allergy = any('peanut' in allergy.lower() for allergy in allergies)
+        
         # Simple meal templates
         templates = {
             'breakfast': [
@@ -137,7 +140,7 @@ class PlanningService:
                 {'name': 'Spinach', 'base_g': 100},
             ],
             'snack': [
-                {'name': 'Almonds', 'base_g': 30},
+                {'name': 'Almonds', 'base_g': 30, 'is_nut': True},
                 {'name': 'Banana', 'base_g': 100},
             ],
         }
@@ -146,6 +149,10 @@ class PlanningService:
         foods = []
         
         for item in template:
+            # Skip nuts if user has peanut allergy
+            if has_peanut_allergy and item.get('is_nut', False):
+                continue
+            
             # Search for food in CIQUAL
             results = self.ciqual.search(item['name'], limit=1)
             
@@ -173,9 +180,31 @@ class PlanningService:
             if current_calories > 0:
                 scale_factor = target_calories / current_calories
                 for food in foods:
-                    food['quantity_g'] = round(food['quantity_g'] * scale_factor, 1)
+                    scaled_quantity = food['quantity_g'] * scale_factor
+                    # Round to realistic values (nearest 5g or 10g)
+                    food['quantity_g'] = self._round_quantity(scaled_quantity)
         
         return foods
+    
+    def _round_quantity(self, quantity: float) -> float:
+        """
+        Round quantity to realistic values.
+        
+        Args:
+            quantity: Raw quantity in grams
+        
+        Returns:
+            Rounded quantity
+        """
+        if quantity < 50:
+            # Round to nearest 5g for small quantities
+            return round(quantity / 5) * 5
+        elif quantity < 200:
+            # Round to nearest 10g for medium quantities
+            return round(quantity / 10) * 10
+        else:
+            # Round to nearest 25g for large quantities
+            return round(quantity / 25) * 25
     
     def generate_shopping_list(
         self,

@@ -95,6 +95,17 @@ def run_agent_handler(user_id: str, message: str) -> ChatResponse:
                 latency_ms=latency_ms
             )
         
+        # Clean response to remove internal reflection text
+        cleaned_response = output_guardrails.clean_response(response_text)
+        
+        # Extract structured data from tool results for meal plans
+        structured_data = None
+        if intent == Intent.MEAL_PLAN and tool_results:
+            for result in tool_results:
+                if result.get('tool_name') == 'daily_planner' and result.get('success'):
+                    structured_data = result.get('result')
+                    break
+        
         # Step 6: Build Response
         latency_ms = int((time.time() - start_time) * 1000)
         
@@ -102,8 +113,8 @@ def run_agent_handler(user_id: str, message: str) -> ChatResponse:
             request_id=request_id,
             status=RequestStatus.SUCCESS,
             intent=intent,
-            response=response_text,
-            data=None,  # Could include structured data if needed
+            response=cleaned_response,
+            data=structured_data,
             latency_ms=latency_ms,
             tool_calls=tool_calls if tool_calls else None
         )

@@ -53,7 +53,13 @@ RESPONSE STYLE:
 - Use bullet points for clarity
 - Include specific numbers from tool results
 - Explain the reasoning behind recommendations
-- Be encouraging and supportive"""
+- Be encouraging and supportive
+
+MEAL PLAN RESPONSES:
+- Present the meal plan in a clear, user-friendly format
+- For adjustments, say "Let me know if you'd like a lower-calorie or higher-protein version" instead of "adjust based on hunger"
+- Keep the response concise - the structured data is already in the tool result
+- Do NOT include internal self-checks or validation text in your response"""
 
     if profile:
         profile_context = f"""
