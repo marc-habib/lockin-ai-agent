@@ -1,0 +1,16 @@
+food_name,category,kcal_100g,protein_100g,carbs_100g,fat_100g,fiber_100g,sugars_100g
+"Chicken breast, raw",Meat,120,23.0,0.0,2.6,0.0,0.0
+"Brown rice, cooked",Grains,112,2.6,23.5,0.9,1.8,0.2
+"Broccoli, raw",Vegetables,34,2.8,6.6,0.4,2.6,1.7
+Banana,Fruits,89,1.1,22.8,0.3,2.6,12.2
+"Oats, raw",Grains,389,16.9,66.3,6.9,10.6,0.0
+"Salmon, raw",Fish,208,20.4,0.0,13.4,0.0,0.0
+"Eggs, whole, raw",Eggs,143,12.6,1.1,9.5,0.0,0.4
+"Sweet potato, raw",Vegetables,86,1.6,20.1,0.1,3.0,4.2
+Almonds,Nuts,579,21.2,21.6,49.9,12.5,4.4
+"Greek yogurt, plain",Dairy,59,10.0,3.6,0.4,0.0,3.6
+Olive oil,Oils,884,0.0,0.0,100.0,0.0,0.0
+"Spinach, raw",Vegetables,23,2.9,3.6,0.4,2.2,0.4
+"Beef, ground, 90% lean",Meat,176,19.4,0.0,10.0,0.0,0.0
+"Quinoa, cooked",Grains,120,4.4,21.3,1.9,2.8,0.9
+Avocado,Fruits,160,2.0,8.5,14.7,6.7,0.7
