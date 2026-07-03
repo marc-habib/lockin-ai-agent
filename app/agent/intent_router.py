@@ -62,8 +62,10 @@ class IntentRouter:
         
         # Product search
         if any(keyword in message_lower for keyword in [
-            'product', 'brand', 'packaged', 'barcode', 'label',
-            'nutriscore', 'nova', 'ingredients'
+            'product', 'brand', 'branded', 'packaged', 'barcode', 'label',
+            'nutriscore', 'nutri-score', 'nova', 'ingredients',
+            'manufacturer', 'allergens',
+            'nutella', 'danone', 'carrefour', 'monoprix', 'yoplait', 'lidl'
         ]):
             return Intent.PRODUCT_SEARCH
         
